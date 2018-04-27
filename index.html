@@ -20,31 +20,72 @@
 <!-- Added link to the ajax library to play around in this code as we learn in class-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-  
 </head>
 
 <body>
+    <!--set up header-->
+    <div class = jumbotron>  
+        <div class = container>
+            <h1 class="container" id="triviaTitle">Who plays this song?</h1>
+                <!--set up input buttons-->
+                <div class="input-group">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-success" type="button">Choose a genre</button>
+                            <button class="btn btn-success" type="button">Choose an artist</button>
+                            <button class="btn btn-success" type="button">Beginning year</button>
+                            <button class="btn btn-success" type="button">Ending year</button>
+                        </div>
+                </div>
+    </div>
+                            <!--set up video display row-->
+                            <div class = row>
+                                    <div class="embed-responsive embed-responsive-4by3">
+                                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
+                                    </div>
+                                <!--set up question area-->
+                                <div class = row>
+                                    <div id="questionArea"></div>
+                                </div>
+                                    <div class = row>
+                                        <div id="choicesArea"></div>
+                                            <div class="radio">
+                                                <label><input type="radio" name="optradio">Option 1</label>
+                                            </div>
+                                            <div class="radio">
+                                                <label><input type="radio" name="optradio">Option 2</label>
+                                            </div>
+                                            <div class="radio disabled">
+                                                <label><input type="radio" name="optradio" disabled>Option 3</label>
+                                            </div>
+                                    </div>
+
+                                    <div class="correct"></div>
+                                    <div class="incorrect"></div>
+                                    <div class="unanswered"></div>
+
+
+
+
+                </div>
+
+
+                <div id="timer"></div>
+
+
+            </div>
+
+
+                
+           
+                
+        
+    </div>  
+
     
-    <!-- <div class="row"> -->
-    <h1 class="container" id="triviaTitle">Vocabulary Trivia!</h1>
-    <!-- </div> -->
-    
-    <br>
-    <br>
-    
-    <!-- <div class="row"> -->
-    <button id="startB">Start Game</button>
-    <div id="timer"></div>
-    <div id="questionArea"></div>
-    <div id="choicesArea"></div>
-    <div class="correct"></div>
-    <div class="incorrect"></div>
-    <div class="unanswered"></div>
-    <!-- </div> -->
 
     
     <script src="assets/javascript/app.js"></script>
 
-  
+    </div><!--close container-->
 </body>
 </html>
