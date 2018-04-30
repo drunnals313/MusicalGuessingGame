@@ -1,64 +1,64 @@
-div {
+body{
+    background-image:url("../images/greencd.jpg");
+    color: white;
+    font-family: cursive;
+   
+      
+}
+
+.jumbotron{
+    background-color:limegreen;
+    
+
+}
+
+img{
+    float:right;
     margin-bottom: 20px;
 }
-.correct, .incorrect {
-    text-transform: capitalize;
+
+#triviaTitle{
+    color: white;
     font-weight: bolder;
-    font-size: 20px;
-}
-
-#choicesArea {
-    font-size: 20px;
-    text-decoration: underline;
-    text-decoration: bold;
-
-}
-
-#questionArea {
-    font-weight: bolder;
-    font-size: 20px;
-}
-
-body {
-    position: absolute;
-    left: 50px;
-    top: 50px;
-    background: url("triangles.jpg") no-repeat;
-    background-size: cover;
-}
-
-
-#triviaTitle {
-    position: relative;
-    top: 5%;
-    Left: 10%;
-    padding-top: 10px;
-    text-align: center;
-    font-weight: bolder;
-    font-size: 32px;
-    /*margin-top: 10px;
-    border: 10px  rgb(15, 4, 4);
-    margin-left:50px;
-    margin-right: 50px; */
-    background-color: rgba(247, 243, 243, 1);
-    max-width: 300px;
-    height: auto;
-    
-}
-
-#mainContent {
-    padding-top: 20px;
-    border: 10px  rgb(15, 4, 4);
-    text-align: center;
-    font-weight: bolder;
+    font-family: cursive;
     font-size: 40px;
-    margin-top: 10px;
-    margin-left:50px;
-    margin-right: 50px;
-    background-color: rgba(247, 243, 243, 1);
-    width: 300px;
-    height:400px;
+
 }
+
+h4{
+    color: white;
+    font-weight: bold;
+    padding:20px;
+
+}
+
+#start{
+    display: block;
+    margin: 0, auto;
+    padding: 15px;
+}
+
+#dropdown{
+    text-align: center;
+    padding: 20px;
+    background: goldenrod;
+
+}
+
+#question{
+    padding: 20px;
+
+}
+
+.form-check{
+    padding: 10px;
+
+}
+
+
+
+
+
 
 
 
