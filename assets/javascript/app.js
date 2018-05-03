@@ -37,7 +37,6 @@ $(document).ready(function() {
         }
           
         $.ajax(searchParam).done(function (response) {
-            console.log(response);
             var results = response.tracks.items;            
             var bankLink = [];
             var indexChecker = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
@@ -75,11 +74,11 @@ $(document).ready(function() {
                     currentWrongAnswers.push(currentArrayElement);
                 }
             }
-            // console.log(ansBank);
-            // console.log(choices);
-            // console.log(bank);
-            // console.log(bankLink);
-            // console.log(randomBank);
+            console.log(ansBank);
+            console.log(choices);
+            console.log(bank);
+            console.log(bankLink);
+            console.log(randomBank);
         }).fail(function (error) { 
             if(error.message == "Invalid access token") {
                 var token = authenticate();
