@@ -1,185 +1,231 @@
-$.fn.tr = function() {
-    var d = this;
-    d.userPk = null;
-    d.answers = {
-        correct: 0,
-        incorrect: 0,
-        unanswered: 0
-    };
-    d.images = null;
-    d.ct = 30;
-    d.current = 0;
-    d.questions = [{
-        question: "When you’re capernoited, what are you?",
-        choices: ["Slightly Afraid", "Slightly drunk", "Slightly embarrassed", "Slightly out of tune"],
-        correct: 1
-    }, {
-        question: "Cleromancy is divination involving what?",
-        choices: ["Dice", "Glass", "Twigs", "Ink"],
-        correct: 0
-    }, {
-        question: "What does a nuxodeltiologist prefer postcard scenes of?",
-        choices: ["The road", "The trees", "The ocean", "The night"],
-        correct: 3
-    }, {
-        question: "What do you have when you’re sciapodous?",
-        choices: ["Huge nose", "Huge chin", "Huge feet", "Huge ears"],
-        correct: 2
-    }, {
-        question: "What are you full of when you’re gambrinous?",
-        choices: ["Beer", "Joy", "Chicken", "Sweat"],
-        correct: 0
-    }, {
-        question: "Tropoclastics is actually the science of?",
-        choices: ["House keeping", "Ancient writing", "Breaking habits", "Eavesdropping"],
-        correct: 2
-    }, {
-        question: "What do you most fear in hormephobia?",
-        choices: ["Salivia", "Shock", "Static", "Silence"],
-        correct: 1
-    }, {
-        question: "What does ponophobia mean?",
-        choices: ["The fear of overheating", "The fear of oversleeping", "The fear of overthinking", "The fear of overworking"],
-        correct: 3
-    }, {
-        question: "Iatrapistia is the lack of faith in what?",
-        choices: ["The medical system", "The judical system", "The educational system", "The legal system"],
-        correct: 0
-    }, {
-        question: "Where is the dactylion?",
-        choices: ["Thumb", "Forefinger", "Middle finger", "Ring Finger"],
-        correct: 2
-    }, {
-        question: "Presbycusis is the loss of what at old age?",
-        choices: ["Smelling", "Hearing", "Tasting", "Feeling"],
-        correct: 1
-    }, {
-        question: "An icononmicar writes about what?",
-        choices: ["Illness", "Religion", "Farming", "Desserts"],
-        correct: 2
-    }, {
-        question: "When you’re a stagiary, what are you a student of?",
-        choices: ["Medicine", "Law", "Geology", "Philosophy"],
-        correct: 1
-    }, {
-        question: "What do you love eating as a pagophagiac?",
-        choices: ["Fingernails", "Ash", "Pips", "Ice"],
-        correct: 3
-    }, {
-        question: "What does napiform mean?",
-        choices: ["Turnip-shaped", "Car-shaped", "Hinge-shaped", "Arch-Shaped"],
-        correct: 0
-    }, {
-        question: "What’s another word for chirotonsor?",
-        choices: ["A masseur", "A carpenter", "A barber", "A dentist"],
-        correct: 2
-    }, {
-        question: "What’s limerance the initial thrill of?",
-        choices: ["Getting a job", "Falling in love", "Learning to write", "Buying a house"],
-        correct: 1
-    }, {
-        question: "What is a wheeple?",
-        choices: ["A poor attempt at whistling", "A poor attempt at listening", "A poor attempt at sneezing", "A poor attempt at hugging"],
-        correct: 0
-    }, {
-        question: "What does psithurism describe the sound of?",
-        choices: ["Flowing water", "Rustling leaves", "Keyboard typing", "Hammer nailing"],
-        correct: 1
-    }, {
-        question: "A person who’s a fysigunkus lacks what?",
-        choices: ["Humor", "Wisdom", "Curiousity", "Temper"],
-        correct: 2
-    }];
-    d.ask = function() {
-        if (d.questions[d.current]) {
-            $("#timer").html("Time remaining: " + d.ct + " secs");
-            $("#questionArea").html(d.questions[d.current].question);
-            var choicesArr = d.questions[d.current].choices;
-            var buttonsArr = [];
+$(document).ready(function() {
 
-            for (var i = 0; i < choicesArr.length; i++) {
-                var button = $('<button>');
-                button.text(choicesArr[i]);
-                button.attr('data-id', i);
-                $('#choicesArea').append(button);
-            }
-            window.trCounter = setInterval(d.timer, 1000);
-        } else {
-            $('body').append($('<div />', {
-                text: 'Unanswered: ' + (
-                    d.questions.length - (d.answers.correct + d.answers.incorrect)),
-                class: 'result'
-            }));  //need to not display answer buttons once time runs out, if the user clicks on them after the time runs out then sometimes the loops for the next question and timer are slightly off .  
-            $('#startB').text('Restart').appendTo('body').show();
-        }
-    };
-    d.timer = function() {
-        d.ct--;
-        if (d.ct <= 0) {
-            setTimeout(function() {
-                d.nextQ();
-            });
+    var choices = [];
+    var bank = [];
+    var randomBank = [];
+    var ansBank = [];
+    var question;
+    var correct;
+    var incorrect;
+    var userGuess;
+    var clicks = 0;
+    var gameLength = 20;
+    var time = 20;
+    var intervalId;
+    var correctAns = 0;
+    var totalQs = 0;
+    var windowTimeout;
+    var counter = 0;
 
-        } else {  //do I need this else?
-            $("#timer").html("Time remaining: " + d.ct + " secs");
+    function authenticate(query) {
+        var auth = {
+            url: "https://fathomless-eyrie-24498.herokuapp.com/spotify/authenticate",
+            method: "GET"
         }
-    };
-    d.nextQ = function() {
-        d.current++;
-        clearInterval(window.trCounter);
-        d.ct = 30;
-        $('#timer').html("");
-        setTimeout(function() {
-            d.reset();
-            d.ask();
-        }, 2500)
-    };
-    d.reset = function() {
-        $('div[id]').each(function(item) {
-            $(this).html('');
+        $.ajax(auth).done(function (response) {
+            var authToken = response;
+            search(authToken, query);
         });
-        $('.correct').html('Correct answers: ' + d.answers.correct);
-        $('.incorrect').html('Incorrect answers: ' + d.answers.incorrect);
-        //$('.unanswered').html('Unanswered questions: ' + d.answers.unanswered);  //add unanswered here
     };
-    d.answer = function(correct) {
-        var string = correct ? 'correct' : 'incorrect';
-        d.answers[string]++;
-        $('.' + string).html(string + ' answers: ' + d.answers[string]);
-    };
-    return d;
-};
-var tr;
 
-$("#startB").click(function() {
-    $(this).hide();
-    $('.result').remove();
-    $('div').html('');
-    tr = new $(window).tr();
-    tr.ask();
-});
 
-$('#choicesArea').on('click', 'button', function(a) {  //a for any
-    var userPk = $(this).data("id"),
-        d = tr || $(window).tr(),
-        temp = d.questions[d.current].correct,
-        correct = d.questions[d.current].choices[temp];
-
-    if (userPk !== temp) {
-        $('#choicesArea').text("Wrong Answer! The correct answer was: " + correct);
-        d.answer(false);
-    } else {
-        $('#choicesArea').text("Correct!!! The correct answer was: " + correct);
-        d.answer(true);
+    function search(authToken, query) {
+        var searchParam = {
+            "async": true,
+            "crossDomain": true,
+            "url": `https://fathomless-eyrie-24498.herokuapp.com/spotify/${authToken}/search?q=${query}&type=track`,
+            "method": "GET"
+        }
+          
+        $.ajax(searchParam).done(function (response) {
+            var results = response.tracks.items;            
+            var bankLink = [];
+            var indexChecker = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+            var currentWrongAnswers = [];
+            var currentIncorrect = [];
+            ansBank = [];
+            randomBank = [];
+            bank = [];
+            for ( i = 0; i < results.length; i++) {
+                bank.push(results[i].name);
+                bankLink.push(results[i].href);
+            }
+            for ( j = 0; j < bank.length; j++) {
+                num = Math.floor(Math.random() * (indexChecker.length - 1))
+                randomIndex = indexChecker[num];
+                choices[randomIndex] = bank[j];
+                indexChecker.splice(num, 1);
+            }
+            for ( k = 0; k < choices.length; k++) {
+                ansBank.push(choices[k]);
+                createRandomBank(randomBank);
+                for ( l = 0; l < 3; l++) {
+                    if (choices[k] == randomBank[l]) {
+                        ansBank.push(randomBank[l+4]);
+                    } else {
+                        ansBank.push(randomBank[l]);
+                    }
+                }
+            }
+            for ( m = 0; m < ansBank.length; m++) {
+                var currentArrayElement = ansBank[m];
+                if ( m === 0 || m % 4 === 0) {
+                    currentWrongAnswers = [];
+                } else {
+                    currentWrongAnswers.push(currentArrayElement);
+                }
+            }
+            console.log(ansBank);
+            console.log(choices);
+            console.log(bank);
+            console.log(bankLink);
+            console.log(randomBank);
+        }).fail(function (error) { 
+            if(error.message == "Invalid access token") {
+                var token = authenticate();
+                authenticate(query);
+            }
+        });
     }
-    //I need to add logic here in order to get the not answered response to tell them the correct answer     commenting this out since it won't work; I need a function to say if timer count equals 0
-    //else {
-    //    $('#choicesArea').text("Sorry, too slow... The correct answer was: " + correct);
-   //     d.answer(null);
-    //}
-    
-    
-    d.nextQ();
-});
 
+    authenticate("taylor swift");
 
+    function createRandomBank() {
+        randomBank = [];
+        var indexCheckerTwo = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+        for ( i = 0; i < bank.length; i++) {
+            num = Math.floor(Math.random() * (indexCheckerTwo.length - 1))
+            randomIndex = indexCheckerTwo[num];
+            randomBank[randomIndex] = bank[i];
+            indexCheckerTwo.splice(num, 1);
+        }
+    }
+
+    function getGiphy() {
+        var giphyURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=no";
+        $.ajax({
+            url: giphyURL,
+            method: "GET"
+        }).then(function(response) {
+            var results = response.data;
+            var noGif = $("<img>");
+            noGif.attr("src", results.images.fixed_height.url);
+            $("#victory").append(noGif);
+        })
+    }
+
+    function showQuestion() {
+        $("#question").html("Question: " + question);
+        $("#category").html("Category: " + category);
+    }
+
+    function showButtons() {
+        $(".list-group").empty();
+        for ( i = 0; i < choices.length; i++) {
+            var btn = $("<button>");
+            btn.addClass("options");
+            btn.attr("id", "btn" + i);
+            btn.attr("data-name", choices[i]);
+            btn.text(choices[i]);
+            $(".list-group").append(btn);
+        }
+    }
+
+    function displayAnswer() {
+        if ( time === 0 ) {
+            $("#timer").html("<h3>Times Up!</h3>");
+            loss();
+            timeOut();
+        } else if ( userGuess == correct ) {
+            clearScreen();
+            correctAns++;
+            stewie = "assets/images/stewie.jpg";
+            img = $("<img>");
+            img.attr("src", stewie);
+            $("#victory").append(img);
+            timeOut();
+        } else if ( userGuess !== correct ) {
+            loss();
+            timeOut();
+        }
+        totalQs++;
+    }
+
+    function clearScreen() {
+        $(".list-group").empty();
+        $("#question").empty();
+        $("#category").empty();
+        $("#timer").empty();
+        choices = [];
+    }
+
+    function run() {
+        clearInterval(intervalId);
+        intervalId = setInterval(decrement, 1000);
+    }
+    
+    function decrement() {
+        time--;
+        $("#timer").html("Time Left: " + time);
+        if ( time === 0) {
+            stop();
+            displayAnswer();
+        }
+    }
+
+    function stop() {
+        clearInterval(intervalId);
+    }
+
+    function timeOut() {
+        windowTimeout = setTimeout(function() {
+            getAPI();
+            time = 20;
+            run();
+        }, 3000);
+    }
+
+    function loss() {
+        clearScreen();
+        getGiphy();
+    }
+
+    function endGame() {
+        if ( totalQs === gameLength ) {
+            clearScreen();
+            $("#victory").html("Game Over!<br>You Scored " + correctAns + " Out of " + totalQs);
+            clearTimeout(windowTimeout);
+            restartGame();
+        }
+    }
+
+    function restartGame() {
+        totalQs = 0;
+        correctAns = 0;
+        clicks = -1;
+        var btn = $("<button>");
+        btn.attr("id", "start");
+        btn.text("Restart Game!")
+        $(".list-group").append(btn);
+    }
+    
+    $("#buttonDiv").on("click", "button", function(event) {
+        event.preventDefault();
+        if ( clicks === 0 ) {
+            $("#victory").empty();
+            $("#categoryDiv").empty();
+            $("#difficultyDiv").empty();
+            $(".list-group").empty();
+            getAPI();
+            run();
+        } else {
+            $("#victory").empty();
+            userGuess = $(this).attr("data-name");
+            displayAnswer();
+            stop();
+            endGame();
+        }
+        clicks++
+    })
+
+})
