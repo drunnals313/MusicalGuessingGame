@@ -28,7 +28,6 @@ $(document).ready(function() {
         });
     };
 
-
     function search(authToken, query) {
         var searchParam = {
             "async": true,
@@ -48,7 +47,7 @@ $(document).ready(function() {
             bank = [];
             for ( i = 0; i < results.length; i++) {
                 bank.push(results[i].name);
-                bankLink.push(results[i].href);
+                bankLink.push(results[i].external_urls.spotify);
             }
             for ( j = 0; j < bank.length; j++) {
                 num = Math.floor(Math.random() * (indexChecker.length - 1))
