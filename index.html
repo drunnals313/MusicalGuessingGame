@@ -1,9 +1,8 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Trivia Game- vocab</title>
-
+<title>Musical Guessing Game</title>
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <!-- Added link in case I add media queries-->
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,39 +11,121 @@
       crossorigin="anonymous">
  <!-- Added link to the ajax library to play around in this code as we learn in class--> 
 <link rel="stylesheet" href="assets/css/style.css" />
-  
-
-
-    <!-- Added link to the jQuery Library -->
+<!--Added link to javascript-->
+<script src="assets/javascript/app.js"></script>
+<!-- Added link to the jQuery Library -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- Added link to the ajax library to play around in this code as we learn in class-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-  
 </head>
-
 <body>
-    
-    <!-- <div class="row"> -->
-    <h1 class="container" id="triviaTitle">Vocabulary Trivia!</h1>
-    <!-- </div> -->
-    
-    <br>
-    <br>
-    
-    <!-- <div class="row"> -->
-    <button id="startB">Start Game</button>
-    <div id="timer"></div>
-    <div id="questionArea"></div>
-    <div id="choicesArea"></div>
-    <div class="correct"></div>
-    <div class="incorrect"></div>
-    <div class="unanswered"></div>
-    <!-- </div> -->
-
-    
-    <script src="assets/javascript/app.js"></script>
-
-  
+<!--Start screen-->    
+    <!--set up header-->
+    <div id = "topScreen">    
+        <div class = "jumbotron">  
+            <div class = "container">
+                <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <h1 id="triviaTitle">Do you know this song?</h1>
+                        <img class="img-fluid rounded-circle" src="assets/images/headmusic.jpg"  alt="Responsive image">
+                        
+                </div>   
+        </div>
+            </div>
+        <div class = "container">
+            <div class = "row">
+                <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <h4> How to play:
+                    Choose a genre from the dropdown menu.  A snippet of song will play for you.  Choose your answer to see what happens.</h4>
+                    <div id = "topScreen">
+                        <button type="button" class="btn btn-outline-warning btn-lg" button id = "start" >Start</button>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <!--Game screen-->
+    <div id = "gameScreen"> 
+        <div class = "container">  
+            <!--set up genre button-->
+            <div class = "row">
+                <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="input-group">
+                            <div id="dropdown">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Genre</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Rock</a>
+                                    <a class="dropdown-item" href="#">Pop</a>
+                                    <a class="dropdown-item" href="#">Country</a>
+                                    <a class="dropdown-item" href="#">Classical</a>
+                                    <a class="dropdown-item" href="#">Gospel</a>
+                                    </div>
+                            </div>
+                    </div>
+                </div>    
+                    <!--<div class="input-group">    
+                            <button class="input-group-text" id="basic-addon1">Start Year</button>
+                            <input type="text" class="form-control" placeholder="Start year range" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>  
+                        <div class="input-group">    
+                            <button class="input-group-text" id="basic-addon1">End Year</button>
+                            <input type="text" class="form-control" placeholder="End year range" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>    
+                        <div class="input-group">    
+                            <button class="input-group-text" id="basic-addon1">Artist</button>
+                            <input type="text" class="form-control" placeholder="Atist name" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                    </div> --> 
+            <!--set up video display row-->        
+                <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div id = "videoplaceholder">Video link goes here</div>
+                </div> 
+            </div>    
+            <!--set up question area-->
+            <div class = "row">
+                <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div id="question">Put question link here</div>
+                </div>
+            </div>    
+            <!--set up multiple choice area-->                          
+            <div class = "row">
+                <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <form class = "choices">
+                        <div class="form-check">
+                        <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox">
+                        Answer 1 (these need to be links?)
+                        </label>
+                        </div>
+                        <div class="form-check">
+                        <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox">
+                        Answer 2
+                        </label>
+                        </div>
+                        <div class="form-check">
+                        <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox">
+                        Answer 3
+                        </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox">
+                        Answer 4
+                            </label>
+                        </div>
+                    </form>
+                </div>    
+            </div> 
+        <!--set up tally-->
+        <div class = "row">
+            <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div id = "tally">
+                    <h4 id = "correct"></h4>
+                    <h4 id = "incorrect"></h4>
+                    <h4 id = "noAnswer"></h4>
+                </div>
+            </div>
+        </div> 
+    </div>
 </body>
 </html>
