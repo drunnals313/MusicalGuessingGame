@@ -12,6 +12,8 @@
   <!-- LINK TO FIREBASE GOES HERE -->
   
   <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
   <style>
     body{
     background-image:url("assets/images/greencd.jpg");
@@ -116,12 +118,6 @@
     
     var dataRef = firebase.database();
     
-    // Initial Values
-    //var name = "";
-    //var comment = "";
-    
-    //console.log("children: ",dataRef.ref().children());
-    //console.log("aaaa: ",dataRef.ref());
     console.log("asdfaksdkfwe: ",dataRef.ref().child("-LAd2B-SMqR7tJiBd8Ih"));
 
     dataRef.ref().child('-LAd2B-SMqR7tJiBd8Ih')
@@ -135,19 +131,19 @@
     $("#add-user").on("click", function(event) {
       event.preventDefault();
       
-      // YOUR TASK!!!
-      // Code in the logic for storing and retrieving the most recent user.
-      // Don't forget to provide initial data to your Firebase database.
       var name = $("#name-input").val().trim();
       var comment = $("#comment-input").val().trim();
       
-      // Code for the push
-      
+      //////NEED TO CLEAR THE FORM AFTER INPUT
+      $("#name-input").empty();
+      $("#comment-input").empty();
+
       dataRef.ref().push({
         name: name,
         comment: comment,
         dateAdded: firebase.database.ServerValue.TIMESTAMP
       });
+      
     });
     
     // Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
@@ -158,7 +154,6 @@
       $("#full-comment-list").prepend("<div class='well'><span class='member-name'> " + childSnapshot.val().name + " said--> " + 
         " </span><span class='member-comment'> " + childSnapshot.val().comment + " </span></div>");
             
-      // Handle the errors
     }, function(errorObject) {
       console.log("Errors handled: " + errorObject.code);
     });
