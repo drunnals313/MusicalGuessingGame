@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+<head>
+  
+  <meta charset="UTF-8">
+  <title>Comment board</title>
+  
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <!-- LINK TO FIREBASE GOES HERE -->
+  
+  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+  <style>
+    body{
+    background-image:url("assets/images/greencd.jpg");
+    font-family: cursive;
+    }
+    </style>
+</head>
+
+<body>
+  
+  <div class="container">
+    
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <h1 class="text-center">Comment board</h1>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="index.html">Musical Trivia</a></li>
+                <li><a href="comments.html">Comment Board</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row">
+      
+      <!-- Sign-Up Card-->
+      <div class="col-lg-6">
+        <div class="card card-default">
+          <div class="card-heading">
+            <h3 class="card-title">Add your name and a comment. Connect with your friends.</h3>
+          </div>
+          
+          <div class="card-body">
+            
+            <!-- Sign-up Form (note the various input "types")-->
+            <form role="form">
+              <div class="form-group row">
+                <label for="name-input">Name:</label>
+                <input class="form-control" id="name-input" type="text">
+              </div>
+              <div class="form-group row">
+                <label for="comment-input">Comment</label>
+                <textarea class="form-control" id="comment-input" rows="5"></textarea>
+              </div>
+              <button class="btn btn-default" id="add-user" type="submit">Submit</button>
+            </form>
+            
+          </div>
+        </div>
+      </div>
+      
+      
+      <!-- Wells for displaying all users -->
+      <div class="col-lg-12">
+        <div class="card card-default">
+          <div class="card-heading">
+            <h3 class="card-title">All Comments</h3>
+          </div>
+          <div class="card-body">
+            <div id="full-comment-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+  
+  <!-- Script -->
+  <script>
+    $(function(){
+ 
+        $('#name-input').keyup(function()
+        {
+            var yourInput = $(this).val();
+            re = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
+            var isSplChar = re.test(yourInput);
+            if(isSplChar)
+            {
+                var no_spl_char = yourInput.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+                $(this).val(no_spl_char);
+            }
+        });
+
+    });
+
+    
+    // Initialize Firebase
+    var config = {
+    apiKey: "AIzaSyA21oWeTEpncB-nHIYQJyuZTU3DlmwMUEs",
+    authDomain: "groupprojectone-55a7b.firebaseapp.com",
+    databaseURL: "https://groupprojectone-55a7b.firebaseio.com",
+    projectId: "groupprojectone-55a7b",
+    storageBucket: "",
+    messagingSenderId: "422469495619"
+  };
+    firebase.initializeApp(config);
+    
+    var dataRef = firebase.database();
+    
+    // Initial Values
+    //var name = "";
+    //var comment = "";
+    
+    //console.log("children: ",dataRef.ref().children());
+    //console.log("aaaa: ",dataRef.ref());
+    console.log("asdfaksdkfwe: ",dataRef.ref().child("-LAd2B-SMqR7tJiBd8Ih"));
+
+    dataRef.ref().child('-LAd2B-SMqR7tJiBd8Ih')
+    .once('value')
+    .then(function(snapshot) {
+      var value = snapshot.val();
+      console.log('aaaaa:', value);
+    });
+
+    // Capture Button Click
+    $("#add-user").on("click", function(event) {
+      event.preventDefault();
+      
+      // YOUR TASK!!!
+      // Code in the logic for storing and retrieving the most recent user.
+      // Don't forget to provide initial data to your Firebase database.
+      var name = $("#name-input").val().trim();
+      var comment = $("#comment-input").val().trim();
+      
+      // Code for the push
+      
+      dataRef.ref().push({
+        name: name,
+        comment: comment,
+        dateAdded: firebase.database.ServerValue.TIMESTAMP
+      });
+    });
+    
+    // Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
+    dataRef.ref().on("child_added", function(childSnapshot) {
+      
+      
+      // full list of items to the well
+      $("#full-comment-list").prepend("<div class='well'><span class='member-name'> " + childSnapshot.val().name + " said--> " + 
+        " </span><span class='member-comment'> " + childSnapshot.val().comment + " </span></div>");
+            
+      // Handle the errors
+    }, function(errorObject) {
+      console.log("Errors handled: " + errorObject.code);
+    });
+        
+    dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
+      // Change the HTML to reflect
+      $("#name-display").text(snapshot.val().name);
+      $("#comment-display").text(snapshot.val().comment);
+    });
+  </script>
+</body>
+</html>
