@@ -5,13 +5,16 @@ $(document).ready(function() {
     var randomBank = [];
     var ansBank = [];
     var arrOfArrs = [];
+    var randomAnsBank = [];
+    var bankLink = [];
+    var choicesLink = [];
+    var choicesTimes = [];
     var question;
-    var correct;
     var incorrect;
     var userGuess;
     var clicks = 0;
     var gameLength = 20;
-    var time = 20;
+    var time = 0;
     var intervalId;
     var correctAns = 0;
     var totalQs = 0;
@@ -39,21 +42,28 @@ $(document).ready(function() {
           
         $.ajax(searchParam).done(function (response) {
             var results = response.tracks.items;            
-            var bankLink = [];
             var indexChecker = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
             var currentWrongAnswers = [];
             var currentIncorrect = [];
+            bankLink = [];
             ansBank = [];
             randomBank = [];
             bank = [];
+            choices = [];
+            choicesLink = [];
+            bankTimes = [];
             for ( i = 0; i < results.length; i++) {
                 bank.push(results[i].name);
-                bankLink.push(results[i].external_urls.spotify);
+                bankLink.push(results[i].uri);
+                bankTimes.push(results[i].duration_ms);
             }
             for ( j = 0; j < bank.length; j++) {
                 num = Math.floor(Math.random() * (indexChecker.length - 1))
                 randomIndex = indexChecker[num];
                 choices[randomIndex] = bank[j];
+                choicesLink[randomIndex] = bankLink[j];
+                choicesTimes[randomIndex] = bankTimes[j];
+                time = Math.floor(choicesTimes[0] / 1000);
                 indexChecker.splice(num, 1);
             }
             for ( k = 0; k < choices.length; k++) {
@@ -101,6 +111,17 @@ $(document).ready(function() {
         }
     }
 
+    function randomizeAnswers() {
+        randomAnsBank = [];
+        var indexCheckerThree = [ 0, 1, 2, 3];
+        for ( i = 0; i < 4; i++) {
+            num = Math.floor(Math.random() * (indexCheckerThree.length - 1))
+            randomIndex = indexCheckerThree[num];
+            randomAnsBank[randomIndex] = arrOfArrs[questionCounter][i];
+            indexCheckerThree.splice(num, 1);
+        }
+    }
+
     function getGiphy() {
         var giphyURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=no";
         $.ajax({
@@ -116,27 +137,30 @@ $(document).ready(function() {
 
     function renderButtons() {
         $("#displayButtons").empty();
-            for (var i = 0; i < arrOfArrs[questionCounter].length; i++) {
-                var a = $("<button>");
-                a.addClass("btn");
-                a.addClass('btn-block')
-                a.attr("data-name", arrOfArrs[questionCounter[i]]);
-                a.text(arrOfArrs[questionCounter][i]);
-                $("#displayButtons").append(a); 
-            }
+        randomizeAnswers();
+        displaySong();
+        for (var i = 0; i < randomAnsBank.length; i++) {
+            var a = $("<button>");
+            a.addClass("btn");
+            a.addClass('btn-block')
+            a.attr("data-name", randomAnsBank[i]);
+            a.text(randomAnsBank[i]);
+            $("#displayButtons").append(a); 
+        }
+        questionCounter++;
     };
 
-    function showQuestion() {
-        $("#question").html("Question: " + question);
-        $("#category").html("Category: " + category);
+    function displaySong() {
+        currentUri = choicesLink[questionCounter];
+        $("#playButton").html('<iframe src="https://open.spotify.com/embed?uri=' + currentUri + '" width="300" height="80" allowtransparency="true" allow="encrypted-media"></iframe>')
     }
 
     function displayAnswer() {
         if ( time === 0 ) {
-            $("#timer").html("<h3>Times Up!</h3>");
             loss();
             timeOut();
-        } else if ( userGuess == correct ) {
+            $("#timer").html("<h3>Oh No! Times Up!</h3>");
+        } else if ( userGuess == choices[questionCounter-1] ) {
             clearScreen();
             correctAns++;
             stewie = "assets/images/stewie.jpg";
@@ -144,7 +168,7 @@ $(document).ready(function() {
             img.attr("src", stewie);
             $("#victory").append(img);
             timeOut();
-        } else if ( userGuess !== correct ) {
+        } else if ( userGuess !== choices[questionCounter-1] ) {
             loss();
             timeOut();
         }
@@ -152,11 +176,10 @@ $(document).ready(function() {
     }
 
     function clearScreen() {
+        $("#playButton").empty();
+        $("#victory").empty();
         $("#displayButtons").empty();
-        $("#question").empty();
-        $("#category").empty();
         $("#timer").empty();
-        choices = [];
     }
 
     function run() {
@@ -179,9 +202,10 @@ $(document).ready(function() {
 
     function timeOut() {
         windowTimeout = setTimeout(function() {
-            getAPI();
-            time = 20;
+            clearScreen();
+            time = Math.floor(choicesTimes[questionCounter] / 1000);
             run();
+            renderButtons();
         }, 3000);
     }
 
@@ -209,14 +233,14 @@ $(document).ready(function() {
         $("#displayButtons").append(btn);
     }
     
-    $("#start").on("click", function(event) {
+    $("#displayButtons").on("click", "button", function(event) {
         event.preventDefault();
         query = $("#artist-input").val();
         if ( clicks === 0 ) {
             $("#victory").empty();
-            $("#displayButtons").empty();
+            $("#button-form").empty();
             authenticate(query);
-            run();
+            // run();
         } else {
             $("#victory").empty();
             userGuess = $(this).attr("data-name");
@@ -224,7 +248,10 @@ $(document).ready(function() {
             stop();
             endGame();
         }
-        clicks++
+        clicks++;
     })
+    $("#playButton").on("click", function() {
+        console.log("clicked");
+    });      
 
 })

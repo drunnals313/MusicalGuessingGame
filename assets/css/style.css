@@ -1,44 +1,56 @@
 body{
-    background-image:url("../greencd.jpg");
-    color: white;
+    background-image:url("../images/greencd.jpg");
     font-family: cursive;
-   
-      
-}
-.jumbotron{
-    background-color:limegreen;
-    
-}
-img{
-    float:right;
-    margin-bottom: 20px;
-    max-width: 100%;
-    height: auto;
 }
 #triviaTitle{
-    color: white;
+    text-align:center;
+    margin: 10px;
+    padding: 20px;
     font-weight: bolder;
     font-family: cursive;
     font-size: 40px;
 }
 h4{
-    color: white;
+    text-align: center;
     font-weight: bold;
     padding:20px;
-}
-#start{
-    display: block;
-    margin: 0, auto;
+} 
+
+#displayButtons{
     padding: 15px;
-}
-#dropdown{
+    margin: 20px;
+    font-size: 25px;
     text-align: center;
+}
+
+#start{
+    padding: 15px;
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-size: 25px;
+    font-family: cursive;
+    text-align: center;
+    width: 290px;
+    height: 103px;
+    color: black;
+}
+
+.spotifyEmbed {
+    margin-bottom: 5px;
+    min-height: 100%;
+    display: block;
     padding: 20px;
-    background: goldenrod;
-}
-#question{
-    padding: 20px;
-}
-.form-check{
-    padding: 10px;
-}
+ }
+    
+ iframe {
+    width: 100%;
+    display: flex;
+    align-items: center;
+ }
+
+
+
+    
+    
+    
+    
