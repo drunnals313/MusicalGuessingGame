@@ -20,6 +20,9 @@ $(document).ready(function() {
     var totalQs = 0;
     var windowTimeout;
     var questionCounter = 0;
+    var pause = true;
+    var aI = $("#artist-input").val();
+    console.log(aI);
 
     function authenticate(query) {
         var auth = {
@@ -150,9 +153,37 @@ $(document).ready(function() {
         questionCounter++;
     };
 
+    var playCounter = 0;
+    var myConfObj = {
+        iframeMouseOver : false
+    }
+    window.addEventListener('blur',function(){
+        if(myConfObj.iframeMouseOver){
+            myConfObj.iframeMouseOver = false;
+            if ( playCounter == 0) {
+                console.log("clicked");
+                run();
+                pause = false;
+                playCounter++; 
+            } else {
+                console.log("paused");
+                pause = true;
+                playCounter++;
+            }
+        } 
+    });
     function displaySong() {
         currentUri = choicesLink[questionCounter];
-        $("#playButton").html('<iframe src="https://open.spotify.com/embed?uri=' + currentUri + '" width="300" height="80" allowtransparency="true" allow="encrypted-media"></iframe>')
+        var iframeElement = $('<iframe id="iframe" src="https://open.spotify.com/embed?uri=' + currentUri + '" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>');
+        iframeElement.on('mouseover', function() {
+            myConfObj.iframeMouseOver = true;
+        });
+        iframeElement.on('mouseout', function() {
+            myConfObj.iframeMouseOver = false;
+        });
+        $("#styling").attr("style", "width: 80px; height: 90px; background: red; float:left; opacity: 1");
+        $("#styling").text("Click to Play Song");
+        $("#playButton").html(iframeElement);
     }
 
     function displayAnswer() {
@@ -163,13 +194,18 @@ $(document).ready(function() {
         } else if ( userGuess == choices[questionCounter-1] ) {
             clearScreen();
             correctAns++;
-            stewie = "assets/images/stewie.jpg";
-            img = $("<img>");
-            img.attr("src", stewie);
-            $("#victory").append(img);
+            //console.log(correctAns);
+            //console.log(choices[questionCounter-1]);
+            //stewie = "assets/images/stewie.jpg";
+            //img = $("<img>");
+            //img.attr("src", stewie);
+            //$("#victory").append(img);
+            // call function to grab youtube clip and display
+            callYT();
             timeOut();
         } else if ( userGuess !== choices[questionCounter-1] ) {
             loss();
+            callYT();
             timeOut();
         }
         totalQs++;
@@ -188,11 +224,13 @@ $(document).ready(function() {
     }
     
     function decrement() {
-        time--;
-        $("#timer").html("Time Left: " + time);
-        if ( time === 0) {
-            stop();
-            displayAnswer();
+        if ( pause == false) {
+            time--;
+            $("#timer").html("Time Left: " + time);
+            if ( time === 0) {
+                stop();
+                displayAnswer();
+            }
         }
     }
 
@@ -206,12 +244,15 @@ $(document).ready(function() {
             time = Math.floor(choicesTimes[questionCounter] / 1000);
             run();
             renderButtons();
-        }, 3000);
+        }, 8000);
     }
 
     function loss() {
         clearScreen();
         getGiphy();
+        //timeout();
+        //callYT();
+        
     }
 
     function endGame() {
@@ -250,8 +291,41 @@ $(document).ready(function() {
         }
         clicks++;
     })
-    $("#playButton").on("click", function() {
-        console.log("clicked");
-    });      
+
+    function callYT() {
+        var qu = aI + " " + choices[questionCounter-1];
+        console.log(qu);
+        //Run GET Request on API
+        $.get(
+            "https://www.googleapis.com/youtube/v3/search", {
+                part: 'snippet',
+                q: qu,
+                type: 'video',
+                maxResults: 1,
+                order: 'viewCount', 
+                key: 'AIzaSyCKlXNyDebje0jDWic6-YX64XYOxoLRndI'},  //AIzaSyCxXJEuKB2w6i14vzW82KzZZUsPLAyilpc
+                function(response) {
+                    var vidz = response.items[0].id.videoId
+                    //console.log(vidz);
+                    $('#victory').append("<iframe width='560' height='315' src='https://www.youtube.com/embed/"+vidz+"' frameborder='0' allowfullscreen></iframe>");
+                }
+        );
+    }
+
+    $(function(){
+ 
+        $('#artist-input').keyup(function()
+        {
+            var yourInput = $(this).val();
+            re = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
+            var isSplChar = re.test(yourInput);
+            if(isSplChar)
+            {
+                var no_spl_char = yourInput.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+                $(this).val(no_spl_char);
+            }
+        });
+
+    });
 
 })
