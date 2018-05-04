@@ -21,8 +21,7 @@ $(document).ready(function() {
     var windowTimeout;
     var questionCounter = 0;
     var pause = true;
-    //var aI = $("#artist-input").val();
-    //console.log(aI);
+    var artistN = "";
 
     function authenticate(query) {
         var auth = {
@@ -293,26 +292,14 @@ $(document).ready(function() {
         clicks++;
     })
 
-    var artistN = "";
-    
+        
     $("#start").on("click", function(event) {
-        //event.preventDefault();
         artistN = $("#artist-input").val().trim();
-        //console.log(artistN);
         });
       
-          
-    //var queA = artistN;
-      //console.log(artistN);
-
-
-
 
     function callYT() {
-        //var qu = aI + " " + choices[questionCounter-1];
         var qu = artistN + " " + choices[questionCounter-1];
-        //var que = $("#artist-input").val();
-        //console.log(response);
         console.log(qu);
         //Run GET Request on API
         $.get(
