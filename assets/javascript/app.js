@@ -21,8 +21,8 @@ $(document).ready(function() {
     var windowTimeout;
     var questionCounter = 0;
     var pause = true;
-    var aI = $("#artist-input").val();
-    console.log(aI);
+    //var aI = $("#artist-input").val();
+    //console.log(aI);
 
     function authenticate(query) {
         var auth = {
@@ -161,12 +161,12 @@ $(document).ready(function() {
         if(myConfObj.iframeMouseOver){
             myConfObj.iframeMouseOver = false;
             if ( playCounter == 0) {
-                console.log("clicked");
+                //console.log("clicked");
                 run();
                 pause = false;
                 playCounter++; 
             } else {
-                console.log("paused");
+                //console.log("paused");
                 pause = true;
                 playCounter++;
             }
@@ -277,6 +277,7 @@ $(document).ready(function() {
     $("#displayButtons").on("click", "button", function(event) {
         event.preventDefault();
         query = $("#artist-input").val();
+        //console.log(query);
         if ( clicks === 0 ) {
             $("#victory").empty();
             $("#button-form").empty();
@@ -292,8 +293,26 @@ $(document).ready(function() {
         clicks++;
     })
 
+    var artistN = "";
+    
+    $("#start").on("click", function(event) {
+        //event.preventDefault();
+        artistN = $("#artist-input").val().trim();
+        //console.log(artistN);
+        });
+      
+          
+    //var queA = artistN;
+      //console.log(artistN);
+
+
+
+
     function callYT() {
-        var qu = aI + " " + choices[questionCounter-1];
+        //var qu = aI + " " + choices[questionCounter-1];
+        var qu = artistN + " " + choices[questionCounter-1];
+        //var que = $("#artist-input").val();
+        //console.log(response);
         console.log(qu);
         //Run GET Request on API
         $.get(
@@ -327,5 +346,7 @@ $(document).ready(function() {
         });
 
     });
+
+    
 
 })
