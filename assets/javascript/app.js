@@ -4,6 +4,7 @@ $(document).ready(function() {
     var bank = [];
     var randomBank = [];
     var ansBank = [];
+    var arrOfArrs = [];
     var question;
     var correct;
     var incorrect;
@@ -15,7 +16,7 @@ $(document).ready(function() {
     var correctAns = 0;
     var totalQs = 0;
     var windowTimeout;
-    var counter = 0;
+    var questionCounter = 0;
 
     function authenticate(query) {
         var auth = {
@@ -37,7 +38,6 @@ $(document).ready(function() {
         }
           
         $.ajax(searchParam).done(function (response) {
-            console.log(response);
             var results = response.tracks.items;            
             var bankLink = [];
             var indexChecker = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
@@ -67,19 +67,21 @@ $(document).ready(function() {
                     }
                 }
             }
+            var arr = [];
+            var counter = 0;
             for ( m = 0; m < ansBank.length; m++) {
                 var currentArrayElement = ansBank[m];
-                if ( m === 0 || m % 4 === 0) {
+                if ( counter == 3) {
+                    currentWrongAnswers.push(currentArrayElement);
+                    arrOfArrs.push(currentWrongAnswers);
                     currentWrongAnswers = [];
+                    counter = 0;
                 } else {
                     currentWrongAnswers.push(currentArrayElement);
+                    counter++;
                 }
             }
-            // console.log(ansBank);
-            // console.log(choices);
-            // console.log(bank);
-            // console.log(bankLink);
-            // console.log(randomBank);
+            renderButtons();
         }).fail(function (error) { 
             if(error.message == "Invalid access token") {
                 var token = authenticate();
@@ -87,8 +89,6 @@ $(document).ready(function() {
             }
         });
     }
-
-    authenticate("taylor swift");
 
     function createRandomBank() {
         randomBank = [];
@@ -114,21 +114,21 @@ $(document).ready(function() {
         })
     }
 
+    function renderButtons() {
+        $("#displayButtons").empty();
+            for (var i = 0; i < arrOfArrs[questionCounter].length; i++) {
+                var a = $("<button>");
+                a.addClass("btn");
+                a.addClass('btn-block')
+                a.attr("data-name", arrOfArrs[questionCounter[i]]);
+                a.text(arrOfArrs[questionCounter][i]);
+                $("#displayButtons").append(a); 
+            }
+    };
+
     function showQuestion() {
         $("#question").html("Question: " + question);
         $("#category").html("Category: " + category);
-    }
-
-    function showButtons() {
-        $(".list-group").empty();
-        for ( i = 0; i < choices.length; i++) {
-            var btn = $("<button>");
-            btn.addClass("options");
-            btn.attr("id", "btn" + i);
-            btn.attr("data-name", choices[i]);
-            btn.text(choices[i]);
-            $(".list-group").append(btn);
-        }
     }
 
     function displayAnswer() {
@@ -152,7 +152,7 @@ $(document).ready(function() {
     }
 
     function clearScreen() {
-        $(".list-group").empty();
+        $("#displayButtons").empty();
         $("#question").empty();
         $("#category").empty();
         $("#timer").empty();
@@ -206,17 +206,16 @@ $(document).ready(function() {
         var btn = $("<button>");
         btn.attr("id", "start");
         btn.text("Restart Game!")
-        $(".list-group").append(btn);
+        $("#displayButtons").append(btn);
     }
     
-    $("#buttonDiv").on("click", "button", function(event) {
+    $("#start").on("click", function(event) {
         event.preventDefault();
+        query = $("#artist-input").val();
         if ( clicks === 0 ) {
             $("#victory").empty();
-            $("#categoryDiv").empty();
-            $("#difficultyDiv").empty();
-            $(".list-group").empty();
-            getAPI();
+            $("#displayButtons").empty();
+            authenticate(query);
             run();
         } else {
             $("#victory").empty();
