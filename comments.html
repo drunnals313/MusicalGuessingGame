@@ -6,20 +6,17 @@
   
   <meta charset="UTF-8">
   <title>Comment board</title>
-  
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <!-- LINK TO FIREBASE GOES HERE -->
   
   <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-  <style>
-    body{
-    background-image:url("assets/images/greencd.jpg");
-    font-family: cursive;
-    }
-    </style>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+  
 </head>
 
 <body>
@@ -30,6 +27,7 @@
     <div class="jumbotron">
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <h1 class="text-center">Comment board</h1>
+            <img class="img-fluid rounded-circle" src="assets/images/headmusic.jpg"  alt="Responsive image">
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <ul class="nav navbar-nav navbar-right">
@@ -42,7 +40,7 @@
     <div class="row">
       
       <!-- Sign-Up Card-->
-      <div class="col-lg-6">
+      <div id= "colW" class="col-lg-6">
         <div class="card card-default">
           <div class="card-heading">
             <h3 class="card-title">Add your name and a comment. Connect with your friends.</h3>
