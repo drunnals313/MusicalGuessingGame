@@ -169,6 +169,7 @@ $(document).ready(function() {
         iframeElement.on('mouseout', function() {
             myConfObj.iframeMouseOver = false;
         });
+        $('#hide').show();
         $("#styling").attr("style", "width: 80px; height: 90px; background: darkblue; float:left; opacity: 1");
         $("#styling").text("Click to Play Song");
         $("#playButton").html(iframeElement);
@@ -288,9 +289,8 @@ $(document).ready(function() {
                 key: 'AIzaSyCKlXNyDebje0jDWic6-YX64XYOxoLRndI'},
                 function(response) {
                     var vidz = response.items[0].id.videoId;
+                    $('#hide').hide();
                     $('#victory2').html("<iframe width='560' height='315' src='https://www.youtube.com/embed/"+vidz+"' frameborder='0' allowfullscreen></iframe>");
-                    $('#playButton').empty();
-                    $('#styling').empty();
                 }
         );
     }
