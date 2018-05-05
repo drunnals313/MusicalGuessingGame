@@ -152,23 +152,12 @@ $(document).ready(function() {
         questionCounter++;
     };
 
-    var playCounter = 0;
     var myConfObj = {
         iframeMouseOver : false
     }
     window.addEventListener('blur',function(){
         if(myConfObj.iframeMouseOver){
-            myConfObj.iframeMouseOver = false;
-            if ( playCounter == 0) {
-                //console.log("clicked");
-                run();
-                pause = false;
-                playCounter++; 
-            } else {
-                //console.log("paused");
-                pause = true;
-                playCounter++;
-            }
+            run();
         } 
     });
     function displaySong() {
@@ -180,7 +169,7 @@ $(document).ready(function() {
         iframeElement.on('mouseout', function() {
             myConfObj.iframeMouseOver = false;
         });
-        $("#styling").attr("style", "width: 80px; height: 90px; background: red; float:left; opacity: 1");
+        $("#styling").attr("style", "width: 80px; height: 90px; background: darkblue; float:left; opacity: 1");
         $("#styling").text("Click to Play Song");
         $("#playButton").html(iframeElement);
     }
@@ -193,13 +182,6 @@ $(document).ready(function() {
         } else if ( userGuess == choices[questionCounter-1] ) {
             clearScreen();
             correctAns++;
-            //console.log(correctAns);
-            //console.log(choices[questionCounter-1]);
-            //stewie = "assets/images/stewie.jpg";
-            //img = $("<img>");
-            //img.attr("src", stewie);
-            //$("#victory").append(img);
-            // call function to grab youtube clip and display
             callYT();
             timeOut();
         } else if ( userGuess !== choices[questionCounter-1] ) {
@@ -250,7 +232,7 @@ $(document).ready(function() {
         clearScreen();
         getGiphy();
         //timeout();
-        //callYT();
+        callYT();
         
     }
 
@@ -276,12 +258,10 @@ $(document).ready(function() {
     $("#displayButtons").on("click", "button", function(event) {
         event.preventDefault();
         query = $("#artist-input").val();
-        //console.log(query);
         if ( clicks === 0 ) {
             $("#victory").empty();
             $("#button-form").empty();
             authenticate(query);
-            // run();
         } else {
             $("#victory").empty();
             userGuess = $(this).attr("data-name");
@@ -291,35 +271,31 @@ $(document).ready(function() {
         }
         clicks++;
     })
-
         
     $("#start").on("click", function(event) {
         artistN = $("#artist-input").val().trim();
         });
       
-
     function callYT() {
         var qu = artistN + " " + choices[questionCounter-1];
-        console.log(qu);
-        //Run GET Request on API
         $.get(
             "https://www.googleapis.com/youtube/v3/search", {
                 part: 'snippet',
                 q: qu,
                 type: 'video',
                 maxResults: 1,
-                order: 'viewCount', 
-                key: 'AIzaSyCKlXNyDebje0jDWic6-YX64XYOxoLRndI'},  //AIzaSyCxXJEuKB2w6i14vzW82KzZZUsPLAyilpc
+                order: 'relevance', 
+                key: 'AIzaSyCKlXNyDebje0jDWic6-YX64XYOxoLRndI'},
                 function(response) {
-                    var vidz = response.items[0].id.videoId
-                    //console.log(vidz);
-                    $('#victory').append("<iframe width='560' height='315' src='https://www.youtube.com/embed/"+vidz+"' frameborder='0' allowfullscreen></iframe>");
+                    var vidz = response.items[0].id.videoId;
+                    $('#victory2').html("<iframe width='560' height='315' src='https://www.youtube.com/embed/"+vidz+"' frameborder='0' allowfullscreen></iframe>");
+                    $('#playButton').empty();
+                    $('#styling').empty();
                 }
         );
     }
 
     $(function(){
- 
         $('#artist-input').keyup(function()
         {
             var yourInput = $(this).val();
@@ -331,9 +307,6 @@ $(document).ready(function() {
                 $(this).val(no_spl_char);
             }
         });
-
     });
-
-    
 
 })
