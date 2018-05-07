@@ -195,6 +195,7 @@ $(document).ready(function() {
 
     function clearScreen() {
         $("#playButton").empty();
+        $("#victory2").empty();
         $("#victory").empty();
         $("#displayButtons").empty();
         $("#timer").empty();
@@ -260,10 +261,12 @@ $(document).ready(function() {
         event.preventDefault();
         query = $("#artist-input").val();
         if ( clicks === 0 ) {
+            $("#victory2").empty();
             $("#victory").empty();
             $("#button-form").empty();
             authenticate(query);
         } else {
+            $("#victory2").empty();
             $("#victory").empty();
             userGuess = $(this).attr("data-name");
             displayAnswer();
