@@ -13,63 +13,53 @@
 <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
 </head>
 <body>
-    <div id = "topScreen">    
+                   
             <div class="jumbotron">
-                    <div class="row">
-                      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-                          <h1 class="text-center">Do You Know This Song?</h1>
-                      </div>
-                      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                          <img class="img-fluid rounded-circle" src="assets/images/headmusic.jpg"  alt="Responsive image">
-                          <ul class="nav navbar-nav navbar-right">
-                              <li class="active"><a href="index.html">Musical Trivia</a></li>
-                              <li><a href="comments.html">Comment Board</a></li>
-                          </ul>
-                      </div>
-                    </div>
-                  </div>
-        <div class = "container">
-            <div class = "row">
-                <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <h4> How to play:
-                    Choose an artist.  A snippet of a song by that artist will play for you.  Choose your answer to see what happens.</h4>
-                </div>
-            </div>
-        </div>  
-    </div>
-    <div id = "gameScreen"> 
-        <div class = "container">                           
-            <div class = "row">
-                <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <div class = "choices" id="displayButtons">
-                        <div class="input-group">
-                            <form id="button-form">
-                                <label for="button-input">Pick an Artist</label>
-                                <input type="text" id="artist-input"><br>
-                                <button type="button" class="btn btn-outline btn-lg" button id = "start" >Start</button>
-                            </form>
+                <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                            <h1 class="text-center">Do You Know This Song?</h1>
+                                <h5 class="text-center">How to play:  Pick an artist.  A snippet of a song by that artist will play.<p class="text-center">Listen, then choose one of the 4 answer choices.</p></h5>    
                         </div> 
-                    </div>
-                </div>    
-            </div>
-            <div class = "row">
-                <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <div id = "timer"></div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <img class="img-fluid rounded-circle" style="border: 1px solid skyblue" src="assets/images/headmusic.jpg"  alt="Responsive image">
+                            <ul class="nav navbar-nav navbar-right">
+                                    <li class="active"><a href="index.html">Musical Trivia</a></li>
+                                    <li><a href="comments.html">Comment Board</a></li>
+                            </ul>
+                        </div>
                 </div>
             </div>
-            <div class = "row">
-                <div id="hide" class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <div id="styling"></div>
-                    <div class="spotifyEmbed" id = "playButton" style="opacity: 0; position: absolute"></div>
+        <div class = "container">                           
+                <div class = "row">
+                        <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class = "choices" id="displayButtons">
+                                <div class="input-group">
+                                    <form id="button-form">
+                                        <label id = "artist" for="button-input">Pick an Artist</label>
+                                        <input type="text" id="artist-input"><br>
+                                            <button type="button" class="btn btn-outline btn-lg" button id = "start" >Start</button>
+                                    </form>
+                                </div> 
+                            </div>
+                        </div>    
                 </div>
-            </div> 
-            <div class = "row">        
-                <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <div id = "victory"></div>
-                    <div id = "victory2"></div>
+                <div class = "row">
+                        <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div id = "timer"></div>
+                        </div>
                 </div>
-            </div> 
+                <div class = "row">
+                        <div id="hide" class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div id="styling"></div>
+                            <div class="spotifyEmbed" id = "playButton" style="opacity: 0; position: absolute"></div>
+                        </div>
+                </div> 
+                <div class = "row">        
+                        <div class = "col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div id = "victory"></div>
+                            <div id = "victory2"></div>
+                        </div>
+                </div> 
         </div>
-    </div>
 </body>
 </html>

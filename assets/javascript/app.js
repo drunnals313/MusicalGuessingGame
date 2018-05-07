@@ -144,7 +144,7 @@ $(document).ready(function() {
         for (var i = 0; i < randomAnsBank.length; i++) {
             var a = $("<button>");
             a.addClass("btn");
-            a.addClass('btn-block')
+           // a.addClass('btn-block')
             a.attr("data-name", randomAnsBank[i]);
             a.text(randomAnsBank[i]);
             $("#displayButtons").append(a); 
